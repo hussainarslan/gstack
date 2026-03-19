@@ -639,6 +639,7 @@ After the plea, suggest the next step:
 - **`/plan-ceo-review`** for ambitious features (EXPANSION mode) — rethink the problem, find the 10-star product
 - **`/plan-eng-review`** for well-scoped implementation planning — lock in architecture, tests, edge cases
 - **`/plan-design-review`** for visual/UX design review
+- **`/research`** if the idea touches an unfamiliar domain — deep dive on the market, technology, or competition before planning
 
 The design doc at `~/.gstack/projects/` is automatically discoverable by downstream skills — they will read it during their pre-review system audit.
 
