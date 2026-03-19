@@ -22,6 +22,7 @@ description: |
   - Ready to deploy / create PR → suggest /ship
   - Post-ship doc updates → suggest /document-release
   - Weekly retrospective → suggest /retro
+  - Researching a topic or building knowledge → suggest /research
   - Wanting a second opinion or adversarial code review → suggest /codex
   - Working with production or live systems → suggest /careful
   - Want to scope edits to one module/directory → suggest /freeze

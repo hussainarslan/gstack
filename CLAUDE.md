@@ -18,6 +18,8 @@ bun run dev:skill    # watch mode: auto-regen + validate on change
 bun run eval:list    # list all eval runs from ~/.gstack-dev/evals/
 bun run eval:compare # compare two eval runs (auto-picks most recent)
 bun run eval:summary # aggregate stats across all eval runs
+bun run research:list    # list all research sessions across projects
+bun run research:search  # search research reports and knowledge base
 ```
 
 `test:evals` requires `ANTHROPIC_API_KEY`. E2E tests stream progress in real-time
@@ -72,6 +74,7 @@ gstack/
 ├── office-hours/    # /office-hours skill (YC Office Hours — startup diagnostic + builder brainstorm)
 ├── investigate/     # /investigate skill (systematic root-cause debugging)
 ├── retro/           # Retrospective skill
+├── research/        # /research skill (deep research agent with parallel web crawling + knowledge base)
 ├── document-release/ # /document-release skill (post-ship doc updates)
 ├── setup            # One-time setup: build binary + symlink skills
 ├── SKILL.md         # Generated from SKILL.md.tmpl (don't edit directly)
