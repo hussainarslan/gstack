@@ -396,12 +396,37 @@ done
 echo "=== END WAVE 1 ==="
 ```
 
-Read and analyze the results. Identify:
-1. Which questions are fully answered
-2. Which need deeper investigation (promising leads found)
-3. Which have contradictions that need resolution
-4. Which have gaps
-5. Collect all "Promising Leads" from Wave 1 agents for Wave 2 targeting
+Read all Wave 1 outputs and produce a **compressed briefing** — apply 5:1 compression
+(if agents produced ~20 pages of raw findings, the briefing should be ~4 pages). Write
+the briefing to the session directory using the Write tool:
+
+**File:** `[SESSION_DIR]/briefing-wave1.md`
+
+**Briefing structure:**
+```
+# Wave 1 Briefing — [topic]
+
+## Answered (no further research needed)
+- Q[n]: [one-line summary] — confidence: High (N sources agree)
+
+## Needs Depth (→ Wave 2 targets)
+- Q[n]: [what's missing] — promising leads: [URL1, URL2]
+- ...
+
+## Contradictions Found (→ Wave 3 targets)
+- [Claim]: Source A (★★★) says X vs Source B (★★) says Y
+
+## Key Facts Established
+- [Fact 1] (N sources, highest: ★★★)
+- [Fact 2] ...
+
+## Gaps
+- [What no agent found anything on]
+```
+
+**Compression rules:** Drop duplicate findings, merge confirming sources into counts,
+keep only the strongest source URL per fact, omit raw quotes (keep conclusions only).
+This briefing is what Wave 2 agents will receive as context — keep it targeted.
 
 ### Step 2d: Wave 2 — Depth (REQUIRED for Standard/Deep/Exhaustive/Nuclear)
 
@@ -416,15 +441,15 @@ Read and analyze the results. Identify:
 
 **Launch at least the MINIMUM. Create one agent per promising lead, unanswered question, or thin area from Wave 1. If you have fewer leads than the minimum, split broad leads into sub-questions to reach the minimum.**
 
-Wave 2 agents follow up on promising leads, unanswered questions, and thin areas
-from Wave 1. Each gets:
+Wave 2 agents follow up on the "Needs Depth" and "Gaps" items from the Wave 1 briefing.
+Each gets the compressed briefing as context (NOT the raw Wave 1 files):
 
 > You are a depth research agent. Wave 1 found initial findings on [topic].
 > Your task: follow up on these specific leads. Work autonomously — fetch any
 > URL that looks relevant without asking for permission.
 >
-> **Follow-up task:** [specific URL to read deeper, or specific sub-question]
-> **Context from Wave 1:** [relevant findings to build on]
+> **Follow-up task:** [specific item from briefing's "Needs Depth" or "Gaps" section]
+> **Context (from Wave 1 briefing):** [paste the relevant 2-3 lines from briefing-wave1.md]
 > **Output file:** [SESSION_DIR]/wave2-[id].md
 >
 > **Instructions:**
@@ -435,7 +460,9 @@ from Wave 1. Each gets:
 > 5. Write findings in the same format as Wave 1
 > 6. Specifically note anything that CONFIRMS or CONTRADICTS Wave 1 findings
 
-Launch Wave 2 agents in parallel (batched if >20).
+Launch all Wave 2 agents using the Agent tool. Use `subagent_type: "search-specialist"`
+for each. Run them all in parallel (batched if >20).
+**Verify you are launching at least the MINIMUM from the table above before sending.**
 
 #### Step 2d-read: Read and analyze Wave 2 results
 
@@ -448,11 +475,29 @@ done
 echo "=== END WAVE 2 ==="
 ```
 
-Read all Wave 2 outputs and analyze:
-1. What contradictions emerged between Wave 1 and Wave 2 findings? (These target Wave 3 arbiter agents)
-2. What claims now have multiple independent confirmations?
-3. What gaps remain unfilled?
-4. Record the specific contradictions and gaps — you will use them to target Wave 3 agents.
+Read all Wave 2 outputs and produce a **compressed briefing** (5:1 ratio). Write it
+to `[SESSION_DIR]/briefing-wave2.md`:
+
+```
+# Wave 2 Briefing — [topic]
+
+## Contradictions to Arbitrate (→ Wave 3 targets)
+- [Claim]: Wave 1 said X (source A ★★★) vs Wave 2 found Y (source B ★★)
+- ...
+
+## Confirmed Claims (multiple independent sources)
+- [Claim]: confirmed by [N] sources across Waves 1-2
+
+## Remaining Gaps (→ Wave 3 gap-fill targets)
+- [What still has no answer or weak sourcing]
+
+## Updated Key Facts
+- [Fact 1] (total sources: N, highest: ★★★)
+```
+
+**Compression rules:** Merge Wave 1 briefing + Wave 2 raw findings into a single
+updated picture. Drop anything already confirmed — Wave 3 only needs contradictions
+and gaps. This briefing feeds Wave 3 arbiter agents.
 
 ### Step 2e: Wave 3 — Arbitration & Gap Fill (REQUIRED for Deep/Exhaustive/Nuclear)
 
@@ -467,12 +512,13 @@ Read all Wave 2 outputs and analyze:
 **Launch at least the MINIMUM. One agent per contradiction or gap. If you have fewer contradictions+gaps than the minimum, assign additional agents to verify the most important claims from Waves 1-2.**
 
 Wave 3 agents are **arbiter agents** — specifically assigned to resolve contradictions
-or fill critical gaps identified in Waves 1-2.
+or fill critical gaps from the Wave 2 briefing. Each gets the specific contradiction
+or gap from `briefing-wave2.md` (NOT raw Wave 1-2 files):
 
 > You are an arbiter research agent. Previous waves found CONTRADICTORY information:
 >
-> **Position A:** [source A says X] (★★★)
-> **Position B:** [source B says Y] (★★)
+> **Position A:** [from briefing: source A says X] (★★★)
+> **Position B:** [from briefing: source B says Y] (★★)
 >
 > **Your task:** Find additional authoritative sources to determine which position
 > is better supported. Look for primary sources, official documentation, or peer-reviewed
@@ -480,7 +526,9 @@ or fill critical gaps identified in Waves 1-2.
 >
 > **Output file:** [SESSION_DIR]/wave3-[id].md
 
-Launch Wave 3 agents in parallel (batched if >20).
+Launch all Wave 3 agents using the Agent tool. Use `subagent_type: "search-specialist"`
+for each. Run them all in parallel (batched if >20).
+**Verify you are launching at least the MINIMUM from the table above before sending.**
 
 #### Step 2e-read: Read and analyze Wave 3 results
 
@@ -493,10 +541,29 @@ done
 echo "=== END WAVE 3 ==="
 ```
 
-Read all Wave 3 outputs and analyze:
-1. Which contradictions are now resolved? Record the winning positions and why.
-2. Which gaps were filled? What new facts emerged?
-3. Identify the 10-20 most important claims from all waves so far — these become Wave 4 cross-referencing targets.
+Read all Wave 3 outputs and produce a **compressed briefing** (5:1 ratio). Write it
+to `[SESSION_DIR]/briefing-wave3.md`:
+
+```
+# Wave 3 Briefing — [topic]
+
+## Resolved Contradictions
+- [Claim]: Winner is [position] — reason: [why] (N arbiter sources agree)
+
+## Top Claims for Cross-Referencing (→ Wave 4 targets)
+1. [Claim 1] (sourced from [url], confirmed by [N] total sources)
+2. [Claim 2] ...
+... (list 10-20 most important claims from ALL waves so far)
+
+## Still Unresolved
+- [Anything arbitration couldn't settle]
+
+## Cumulative Key Facts
+- [Fact 1] (total sources: N, confidence: High/Medium/Low)
+```
+
+This briefing feeds Wave 4 cross-referencing agents. The "Top Claims" list is
+the primary input — each Wave 4 agent validates 2-3 claims from this list.
 
 ### Step 2f: Wave 4 — Cross-Referencing (REQUIRED for Nuclear)
 
@@ -508,17 +575,18 @@ Read all Wave 3 outputs and analyze:
 
 **Launch at least 12 agents. Assign 2-3 key claims per agent from the 10-20 most important findings identified in Step 2e-read.**
 
-Wave 4 agents are **validation agents** that cross-reference key findings from
-Waves 1-3 against independent sources. Each agent takes 2-3 key claims and
-searches for confirming or contradicting evidence from sources NOT already cited.
+Wave 4 agents are **validation agents** that cross-reference claims from the Wave 3
+briefing's "Top Claims" list against independent sources. Each agent takes 2-3 claims
+and searches for confirming or contradicting evidence from sources NOT already cited.
+Feed each agent its claims from `briefing-wave3.md` (NOT raw Wave 1-3 files):
 
 > You are a validation research agent. Previous waves established these key findings.
 > Your task: find INDEPENDENT sources (not already cited) that confirm or contradict
 > each claim. Work autonomously.
 >
-> **Claims to validate:**
-> 1. [claim 1] (originally sourced from [url])
-> 2. [claim 2] (originally sourced from [url])
+> **Claims to validate (from Wave 3 briefing):**
+> 1. [claim from briefing-wave3.md "Top Claims" list] (originally sourced from [url])
+> 2. [claim from briefing-wave3.md "Top Claims" list] (originally sourced from [url])
 >
 > **Instructions:**
 > 1. Search for each claim using different keywords than the original research
@@ -528,7 +596,9 @@ searches for confirming or contradicting evidence from sources NOT already cited
 >
 > **Output file:** [SESSION_DIR]/wave4-[id].md
 
-Launch Wave 4 agents in parallel.
+Launch all Wave 4 agents using the Agent tool. Use `subagent_type: "search-specialist"`
+for each. Run them all in parallel.
+**Verify you are launching at least 12 agents before sending.**
 
 #### Step 2f-read: Read and analyze Wave 4 results
 
@@ -541,10 +611,29 @@ done
 echo "=== END WAVE 4 ==="
 ```
 
-Read all Wave 4 outputs and analyze:
-1. Assess confirmation strength per claim: Strong (3+ independent sources), Moderate (1-2), Weak (0)
-2. Flag any claims that turned out to be single-source or unverifiable
-3. Formulate Wave 5 synthesis tasks: comparison tables, timelines, taxonomies, or tangential explorations based on the full body of validated findings
+Read all Wave 4 outputs and produce a **compressed briefing** (5:1 ratio). Write it
+to `[SESSION_DIR]/briefing-wave4.md`:
+
+```
+# Wave 4 Briefing — [topic]
+
+## Validation Scorecard
+| Claim | Confirmation | Independent Sources | Confidence |
+|-------|-------------|--------------------| ----------|
+| [claim 1] | Strong/Moderate/Weak | [N] new sources | High/Medium/Low |
+
+## Weakened or Overturned Claims
+- [Any claims that independent verification contradicted]
+
+## Synthesis Tasks (→ Wave 5 targets)
+1. [Comparison table: X vs Y vs Z]
+2. [Timeline: evolution of topic]
+3. [Taxonomy: categorization of findings]
+... (identify at least 8 tasks)
+```
+
+This briefing feeds Wave 5 synthesis agents. Each agent gets a specific task
+from the "Synthesis Tasks" list plus the Validation Scorecard as context.
 
 ### Step 2g: Wave 5 — Synthesis Helpers (REQUIRED for Nuclear)
 
@@ -556,12 +645,52 @@ Read all Wave 4 outputs and analyze:
 
 **Launch at least 8 synthesis agents. Assign tasks like: comparison table generation, timeline construction, taxonomy building, tangential question exploration, or statistical summary compilation.**
 
-Wave 5 agents handle **specialized synthesis tasks** — generating comparison tables,
-building timelines, or researching specific tangential questions that emerged during
-earlier waves. Identify 5-10 synthesis tasks from the findings so far: comparison
-matrices, timeline construction, taxonomy building, or exploring tangential questions
-that surfaced in Waves 1-4. Every Nuclear research session benefits from structured
-synthesis — launch these agents.
+Wave 5 agents handle **specialized synthesis tasks** from the Wave 4 briefing's
+"Synthesis Tasks" list. Each agent gets its assigned task plus the Validation Scorecard
+as context (NOT raw Wave 1-4 files). Every Nuclear research session benefits from
+structured synthesis.
+
+Launch all Wave 5 agents using the Agent tool. Use `subagent_type: "search-specialist"`
+for each. Run them all in parallel.
+**Verify you are launching at least 8 agents before sending.**
+
+#### Step 2g-read: Read and analyze Wave 5 results
+
+```bash
+SESSION_DIR="/tmp/gstack-$SESSION_ID"
+echo "=== WAVE 5 RESULTS ==="
+for f in "$SESSION_DIR"/wave5-*.md; do
+  [ -f "$f" ] && echo "--- $(basename "$f") ---" && cat "$f" && echo ""
+done
+echo "=== END WAVE 5 ==="
+```
+
+Read all Wave 5 outputs and produce the **final research briefing**. Write it
+to `[SESSION_DIR]/briefing-final.md`:
+
+```
+# Final Research Briefing — [topic]
+
+## Validated Key Facts (from all waves)
+- [Fact 1] — confidence: High (N independent sources) — [best source URL]
+- ...
+
+## Resolved Contradictions
+- [Claim]: [winning position] — [why]
+
+## Unresolved / Low-Confidence
+- [Claims with Weak validation or no independent confirmation]
+
+## Synthesis Artifacts
+- [Table/timeline/taxonomy produced by Wave 5 agents — include inline or reference file]
+
+## Open Questions
+- [What remains unanswered after 5 waves]
+```
+
+This final briefing is the primary input for Phase 3 (Filter + Rank) and Phase 4
+(Synthesis). It replaces re-reading all raw wave files — the compression chain
+(wave1→briefing1→wave2→briefing2→...→final) preserves signal while shedding noise.
 
 **Total minimum agent count by depth:**
 
@@ -575,7 +704,7 @@ synthesis — launch these agents.
 
 ### Step 2h: Wave Completion Checkpoint
 
-Before proceeding to Phase 3, verify all REQUIRED waves executed:
+Before proceeding to Phase 3, verify all REQUIRED waves launched enough agents:
 
 ```bash
 SESSION_DIR="/tmp/gstack-$SESSION_ID"
@@ -587,23 +716,51 @@ done
 echo "=== END CHECK ==="
 ```
 
-**HARD RULE:** Cross-reference the file counts against the Wave Execution Matrix for the user's chosen depth. If ANY required wave has 0 files, STOP — go back and execute the missing wave before proceeding. Report the completion status to yourself before moving to Phase 3.
+**HARD RULE:** Cross-reference each wave's file count against BOTH the Wave Execution Matrix (is this wave REQUIRED?) AND the per-wave MINIMUM agent table. Check:
+1. If a REQUIRED wave has **0 files** → STOP. Go back and execute the missing wave.
+2. If a REQUIRED wave has **fewer files than its MINIMUM** → STOP. Launch additional agents for that wave until the minimum is met, then re-run this checkpoint.
+
+For reference, the minimums are:
+- Wave 1: Quick=8, Standard=15, Deep=20, Exhaustive=30, Nuclear=40
+- Wave 2: Standard=8, Deep=12, Exhaustive=18, Nuclear=30
+- Wave 3: Deep=8, Exhaustive=10, Nuclear=18
+- Wave 4: Nuclear=12
+- Wave 5: Nuclear=8
+
+Report the completion status before moving to Phase 3.
 
 ---
 
 ## Phase 3: Filter + Rank
 
-Read all agent output files from the session directory.
+Read the **latest briefing file** from the session directory — this is the compressed
+output of the entire wave chain. Use the highest-numbered briefing available:
+- Quick → `briefing-wave1.md`
+- Standard → `briefing-wave2.md`
+- Deep/Exhaustive → `briefing-wave3.md`
+- Nuclear → `briefing-final.md`
 
 ```bash
 SESSION_DIR="/tmp/gstack-$SESSION_ID"
-echo "=== ALL RESULTS ==="
-for f in "$SESSION_DIR"/wave*.md; do
-  [ -f "$f" ] && echo "--- $(basename "$f") ---" && cat "$f" && echo ""
+echo "=== BRIEFING FILES ==="
+ls -la "$SESSION_DIR"/briefing-*.md 2>/dev/null
+echo ""
+echo "=== LATEST BRIEFING ==="
+# Read the highest-numbered briefing (the most compressed/complete one)
+for f in "$SESSION_DIR"/briefing-final.md "$SESSION_DIR"/briefing-wave4.md "$SESSION_DIR"/briefing-wave3.md "$SESSION_DIR"/briefing-wave2.md "$SESSION_DIR"/briefing-wave1.md; do
+  if [ -f "$f" ]; then
+    echo "Using: $(basename "$f")"
+    cat "$f"
+    break
+  fi
 done
-echo "=== SOURCE COUNT ==="
+echo ""
+echo "=== SOURCE COUNT (raw files) ==="
 grep -c '★' "$SESSION_DIR"/wave*.md 2>/dev/null | tail -5
 ```
+
+Use the briefing as your primary input for ranking. Only go back to raw wave files
+if you need to recover specific source URLs or quotes for the citation list.
 
 **Filtering rules:**
 1. **Deduplicate:** Same fact from multiple sources → keep the highest-quality source
@@ -735,7 +892,7 @@ Write structured data to the DATA_PATH as JSON:
   "topic": "[topic]",
   "topicSlug": "[topic-slug]",
   "date": "[ISO date]",
-  "depth": "[Quick/Standard/Deep/Exhaustive]",
+  "depth": "[Quick/Standard/Deep/Exhaustive/Nuclear]",
   "questionsTotal": N,
   "questionsNew": N,
   "questionsFromPrior": N,
