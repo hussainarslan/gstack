@@ -1,8 +1,10 @@
-# gstack — AI Engineering Workflow
+# sage — AI Engineering Workflow
 
-gstack is a collection of SKILL.md files that give AI agents structured roles for
+sage is a collection of SKILL.md files that give AI agents structured roles for
 software development. Each skill is a specialist: CEO reviewer, eng manager,
 designer, QA lead, release engineer, debugger, and more.
+
+Built on [gstack](https://github.com/garrytan/gstack) by Garry Tan.
 
 ## Available skills
 
@@ -16,20 +18,28 @@ Skills live in `.agents/skills/`. Invoke them by name (e.g., `/office-hours`).
 | `/plan-design-review` | Rate each design dimension 0-10, explain what a 10 looks like. |
 | `/design-consultation` | Build a complete design system from scratch. |
 | `/review` | Pre-landing PR review. Finds bugs that pass CI but break in prod. |
-| `/debug` | Systematic root-cause debugging. No fixes without investigation. |
+| `/investigate` | Systematic root-cause debugging. No fixes without investigation. |
 | `/design-review` | Design audit + fix loop with atomic commits. |
 | `/qa` | Open a real browser, find bugs, fix them, re-verify. |
 | `/qa-only` | Same as /qa but report only — no code changes. |
+| `/cso` | Infrastructure-first security audit. OWASP Top 10 + STRIDE. |
+| `/research` | Deep research with parallel web crawling and persistent knowledge base. |
+| `/ralph` | Recursive Audit-Learn-Plan-Harden loop. Iterative improvement until stable. |
 | `/ship` | Run tests, review, push, open PR. One command. |
+| `/land-and-deploy` | Merge PR, wait for CI/deploy, verify production health. |
+| `/canary` | Post-deploy monitoring loop. |
+| `/benchmark` | Performance regression detection. |
+| `/autoplan` | Automated review pipeline: CEO → design → eng. |
 | `/document-release` | Update all docs to match what you just shipped. |
 | `/retro` | Weekly retro with per-person breakdowns and shipping streaks. |
 | `/browse` | Headless browser — real Chromium, real clicks, ~100ms/command. |
 | `/setup-browser-cookies` | Import cookies from your real browser for authenticated testing. |
+| `/codex` | Cross-model second opinion via OpenAI Codex CLI. |
 | `/careful` | Warn before destructive commands (rm -rf, DROP TABLE, force-push). |
 | `/freeze` | Lock edits to one directory. Hard block, not just a warning. |
 | `/guard` | Activate both careful + freeze at once. |
 | `/unfreeze` | Remove directory edit restrictions. |
-| `/gstack-upgrade` | Update gstack to the latest version. |
+| `/sage-upgrade` | Update sage to the latest version. |
 
 ## Build commands
 

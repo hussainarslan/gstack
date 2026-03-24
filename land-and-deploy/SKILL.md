@@ -437,7 +437,7 @@ Collect evidence for each check below. Track warnings (yellow) and blockers (red
 ### 3.5a: Review staleness check
 
 ```bash
-~/.claude/skills/gstack/bin/gstack-review-read 2>/dev/null
+~/.claude/skills/sage/bin/sage-review-read 2>/dev/null
 ```
 
 Parse the output. For each review skill (plan-eng-review, plan-ceo-review,
@@ -477,7 +477,7 @@ If tests fail: **BLOCKER.** Cannot merge with failing tests.
 **E2E tests — check recent results:**
 
 ```bash
-ls -t ~/.gstack-dev/evals/*-e2e-*-$(date +%Y-%m-%d)*.json 2>/dev/null | head -20
+ls -t ~/.sage-dev/evals/*-e2e-*-$(date +%Y-%m-%d)*.json 2>/dev/null | head -20
 ```
 
 For each eval file from today, parse pass/fail counts. Show:
@@ -492,7 +492,7 @@ If E2E results exist but have failures: **WARNING — N tests failed.** List the
 **LLM judge evals — check recent results:**
 
 ```bash
-ls -t ~/.gstack-dev/evals/*-llm-judge-*-$(date +%Y-%m-%d)*.json 2>/dev/null | head -5
+ls -t ~/.sage-dev/evals/*-llm-judge-*-$(date +%Y-%m-%d)*.json 2>/dev/null | head -5
 ```
 
 If found, parse and show pass/fail. If not found, note "No LLM evals run today."
@@ -671,10 +671,10 @@ in the decision tree below.
 
 If you want to persist deploy settings for future runs, suggest the user run `/setup-deploy`.
 
-Then run `gstack-diff-scope` to classify the changes:
+Then run `sage-diff-scope` to classify the changes:
 
 ```bash
-eval $(~/.claude/skills/gstack/bin/gstack-diff-scope $(gh pr view --json baseRefName -q .baseRefName 2>/dev/null || echo main) 2>/dev/null)
+eval $(~/.claude/skills/sage/bin/sage-diff-scope $(gh pr view --json baseRefName -q .baseRefName 2>/dev/null || echo main) 2>/dev/null)
 echo "FRONTEND=$SCOPE_FRONTEND BACKEND=$SCOPE_BACKEND DOCS=$SCOPE_DOCS CONFIG=$SCOPE_CONFIG"
 ```
 
@@ -802,7 +802,7 @@ $B text
 Verify the page has content (not blank, not a generic error page).
 
 ```bash
-$B snapshot -i -a -o ".gstack/deploy-reports/post-deploy.png"
+$B snapshot -i -a -o ".sage/deploy-reports/post-deploy.png"
 ```
 
 Take an annotated screenshot as evidence.
@@ -848,7 +848,7 @@ After a successful revert, note the revert commit SHA and continue to Step 9 wit
 Create the deploy report directory:
 
 ```bash
-mkdir -p .gstack/deploy-reports
+mkdir -p .sage/deploy-reports
 ```
 
 Produce and display the ASCII summary:
@@ -879,13 +879,13 @@ Verification: <HEALTHY / DEGRADED / SKIPPED / REVERTED>
 VERDICT: <DEPLOYED AND VERIFIED / DEPLOYED (UNVERIFIED) / REVERTED>
 ```
 
-Save report to `.gstack/deploy-reports/{date}-pr{number}-deploy.md`.
+Save report to `.sage/deploy-reports/{date}-pr{number}-deploy.md`.
 
 Log to the review dashboard:
 
 ```bash
 eval "$(~/.claude/skills/sage/bin/sage-slug 2>/dev/null)"
-mkdir -p ~/.gstack/projects/$SLUG
+mkdir -p ~/.sage/projects/$SLUG
 ```
 
 Write a JSONL entry with timing data:

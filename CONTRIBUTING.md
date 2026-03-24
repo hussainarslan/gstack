@@ -1,6 +1,6 @@
 # Contributing to sage
 
-Thanks for wanting to make sage better. Whether you're fixing a typo in a skill prompt or building an entirely new workflow, this guide will get you up and running fast.
+sage is a fork of [gstack](https://github.com/garrytan/gstack) by [Garry Tan](https://x.com/garrytan). Thanks for wanting to make it better. Whether you're fixing a typo in a skill prompt or building an entirely new workflow, this guide will get you up and running fast.
 
 ## Quick start
 
@@ -9,7 +9,7 @@ sage skills are Markdown files that Claude Code discovers from a `skills/` direc
 That's what dev mode does. It symlinks your repo into the local `.claude/skills/` directory so Claude Code reads skills straight from your checkout.
 
 ```bash
-git clone <repo> && cd sage
+git clone https://github.com/hussainarslan/gstack.git sage && cd sage
 bun install                    # install dependencies
 bin/dev-setup                  # activate dev mode
 ```

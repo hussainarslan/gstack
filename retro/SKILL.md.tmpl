@@ -115,8 +115,8 @@ find . -name '*.test.*' -o -name '*.spec.*' -o -name '*_test.*' -o -name '*_spec
 # 11. Regression test commits in window
 git log origin/<default> --since="<window>" --oneline --grep="test(qa):" --grep="test(design):" --grep="test: coverage"
 
-# 12. gstack skill usage telemetry (if available)
-cat ~/.gstack/analytics/skill-usage.jsonl 2>/dev/null || true
+# 12. sage skill usage telemetry (if available)
+cat ~/.sage/analytics/skill-usage.jsonl 2>/dev/null || true
 
 # 12. Test files changed in window
 git log origin/<default> --since="<window>" --format="" --name-only | grep -E '\.(test|spec)\.' | sort -u | wc -l
@@ -178,7 +178,7 @@ If TODOS.md doesn't exist, skip the Backlog Health row.
 
 If the JSONL file doesn't exist or has no entries in the window, skip the Skill Usage row.
 
-**Eureka Moments (if logged):** Read `~/.gstack/analytics/eureka.jsonl` if it exists. Filter entries within the retro time window by `ts` field. For each eureka moment, show the skill that flagged it, the branch, and a one-line summary of the insight. Present as:
+**Eureka Moments (if logged):** Read `~/.sage/analytics/eureka.jsonl` if it exists. Filter entries within the retro time window by `ts` field. For each eureka moment, show the skill that flagged it, the branch, and a one-line summary of the insight. Present as:
 
 ```
 | Eureka Moments | 2 this period |
@@ -524,14 +524,14 @@ Locate and run the discovery script using this fallback chain:
 
 ```bash
 DISCOVER_BIN=""
-[ -x ~/.claude/skills/gstack/bin/gstack-global-discover ] && DISCOVER_BIN=~/.claude/skills/gstack/bin/gstack-global-discover
-[ -z "$DISCOVER_BIN" ] && [ -x .claude/skills/gstack/bin/gstack-global-discover ] && DISCOVER_BIN=.claude/skills/gstack/bin/gstack-global-discover
+[ -x ~/.claude/skills/sage/bin/gstack-global-discover ] && DISCOVER_BIN=~/.claude/skills/sage/bin/gstack-global-discover
+[ -z "$DISCOVER_BIN" ] && [ -x .claude/skills/sage/bin/gstack-global-discover ] && DISCOVER_BIN=.claude/skills/sage/bin/gstack-global-discover
 [ -z "$DISCOVER_BIN" ] && which gstack-global-discover >/dev/null 2>&1 && DISCOVER_BIN=$(which gstack-global-discover)
 [ -z "$DISCOVER_BIN" ] && [ -f bin/gstack-global-discover.ts ] && DISCOVER_BIN="bun run bin/gstack-global-discover.ts"
 echo "DISCOVER_BIN: $DISCOVER_BIN"
 ```
 
-If no binary is found, tell the user: "Discovery script not found. Run `bun run build` in the gstack directory to compile it." and stop.
+If no binary is found, tell the user: "Discovery script not found. Run `bun run build` in the sage directory to compile it." and stop.
 
 Run the discovery:
 ```bash
@@ -645,7 +645,7 @@ align cleanly. Never truncate project names.
 ║  • [1-line description of second theme]
 ║  • [1-line description of third theme]
 ║
-║  Powered by gstack · github.com/garrytan/gstack
+║  Powered by sage · github.com/hussainarslan/gstack
 ╚═══════════════════════════════════════════════════════════════
 ```
 
@@ -742,7 +742,7 @@ Considering the full cross-project picture.
 ### Global Step 8: Load history & compare
 
 ```bash
-ls -t ~/.gstack/retros/global-*.json 2>/dev/null | head -5
+ls -t ~/.sage/retros/global-*.json 2>/dev/null | head -5
 ```
 
 **Only compare against a prior retro with the same `window` value** (e.g., 7d vs 7d). If the most recent prior retro has a different window, skip comparison and note: "Prior global retro used a different window — skipping comparison."
@@ -754,17 +754,17 @@ If no prior global retros exist, append: "First global retro recorded — run ag
 ### Global Step 9: Save snapshot
 
 ```bash
-mkdir -p ~/.gstack/retros
+mkdir -p ~/.sage/retros
 ```
 
 Determine the next sequence number for today:
 ```bash
 today=$(date +%Y-%m-%d)
-existing=$(ls ~/.gstack/retros/global-${today}-*.json 2>/dev/null | wc -l | tr -d ' ')
+existing=$(ls ~/.sage/retros/global-${today}-*.json 2>/dev/null | wc -l | tr -d ' ')
 next=$((existing + 1))
 ```
 
-Use the Write tool to save JSON to `~/.gstack/retros/global-${today}-${next}.json`:
+Use the Write tool to save JSON to `~/.sage/retros/global-${today}-${next}.json`:
 
 ```json
 {
@@ -773,7 +773,7 @@ Use the Write tool to save JSON to `~/.gstack/retros/global-${today}-${next}.jso
   "window": "7d",
   "projects": [
     {
-      "name": "gstack",
+      "name": "sage",
       "remote": "https://github.com/garrytan/gstack",
       "commits": 47,
       "insertions": 3200,
@@ -791,7 +791,7 @@ Use the Write tool to save JSON to `~/.gstack/retros/global-${today}-${next}.jso
     "global_streak_days": 52,
     "avg_context_switches_per_day": 2.1
   },
-  "tweetable": "Week of Mar 14: 5 projects, 182 commits, 15.3k LOC | CC: 48, Codex: 8, Gemini: 3 | Focus: gstack (58%) | Streak: 52d"
+  "tweetable": "Week of Mar 14: 5 projects, 182 commits, 15.3k LOC | CC: 48, Codex: 8, Gemini: 3 | Focus: sage (58%) | Streak: 52d"
 }
 ```
 
@@ -830,4 +830,4 @@ When the user runs `/retro compare` (or `/retro compare 14d`):
 - Treat merge commits as PR boundaries
 - Do not read CLAUDE.md or other docs — this skill is self-contained
 - On first run (no prior retros), skip comparison sections gracefully
-- **Global mode:** Does NOT require being inside a git repo. Saves snapshots to `~/.gstack/retros/` (not `.context/retros/`). Gracefully skip AI tools that aren't installed. Only compare against prior global retros with the same window value. If streak hits 365d cap, display as "365+ days".
+- **Global mode:** Does NOT require being inside a git repo. Saves snapshots to `~/.sage/retros/` (not `.context/retros/`). Gracefully skip AI tools that aren't installed. Only compare against prior global retros with the same window value. If streak hits 365d cap, display as "365+ days".

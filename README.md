@@ -1,33 +1,18 @@
 # sage
 
-> "I don't think I've typed like a line of code probably since December, basically, which is an extremely large change." — [Andrej Karpathy](https://fortune.com/2026/03/21/andrej-karpathy-openai-cofounder-ai-agents-coding-state-of-psychosis-openclaw/), No Priors podcast, March 2026
+> An AI-powered engineering team in your terminal. Twenty specialists, eight power tools, all slash commands.
 
-When I heard Karpathy say this, I wanted to find out how. How does one person ship like a team of twenty? Peter Steinberger built [OpenClaw](https://github.com/openclaw/openclaw) — 247K GitHub stars — essentially solo with AI agents. The revolution is here. A single builder with the right tooling can move faster than a traditional team.
+sage turns Claude Code into a virtual engineering team — a CEO who rethinks the product, an eng manager who locks architecture, a designer who catches AI slop, a reviewer who finds production bugs, a QA lead who opens a real browser, a security officer who runs OWASP + STRIDE audits, and a release engineer who ships the PR.
 
-I'm [Garry Tan](https://x.com/garrytan), President & CEO of [Y Combinator](https://www.ycombinator.com/). I've worked with thousands of startups — Coinbase, Instacart, Rippling — when they were one or two people in a garage. Before YC, I was one of the first eng/PM/designers at Palantir, cofounded Posterous (sold to Twitter), and built Bookface, YC's internal social network.
+**Built on [gstack](https://github.com/garrytan/gstack)** by [Garry Tan](https://x.com/garrytan) — the original open-source software factory. sage is a fork that adds deep research, iterative improvement loops, and custom workflows on top of gstack's battle-tested foundation.
 
-**sage is my answer.** I've been building products for twenty years, and right now I'm shipping more code than I ever have. In the last 60 days: **600,000+ lines of production code** (35% tests), **10,000-20,000 lines per day**, part-time, while running YC full-time. Here's my last `/retro` across 3 projects: **140,751 lines added, 362 commits, ~115k net LOC** in one week.
+## What sage adds
 
-**2026 — 1,237 contributions and counting:**
+Everything in [gstack](https://github.com/garrytan/gstack), plus:
 
-![GitHub contributions 2026 — 1,237 contributions, massive acceleration in Jan-Mar](docs/images/github-2026.png)
-
-**2013 — when I built Bookface at YC (772 contributions):**
-
-![GitHub contributions 2013 — 772 contributions building Bookface at YC](docs/images/github-2013.png)
-
-Same person. Different era. The difference is the tooling.
-
-**sage is how I do it.** It turns Claude Code into a virtual engineering team — a CEO who rethinks the product, an eng manager who locks architecture, a designer who catches AI slop, a reviewer who finds production bugs, a QA lead who opens a real browser, a security officer who runs OWASP + STRIDE audits, and a release engineer who ships the PR. Twenty specialists and eight power tools, all slash commands, all Markdown, all free, MIT license.
-
-This is my open source software factory. I use it every day. I'm sharing it because these tools should be available to everyone.
-
-Fork it. Improve it. Make it yours. And if you want to hate on free open source software — you're welcome to, but I'd rather you just try it first.
-
-**Who this is for:**
-- **Founders and CEOs** — especially technical ones who still want to ship
-- **First-time Claude Code users** — structured roles instead of a blank prompt
-- **Tech leads and staff engineers** — rigorous review, QA, and release automation on every PR
+- **`/research`** — Deep research agent with parallel web crawling, persistent knowledge base, and cross-session learning. Uses agent swarms for massive parallel gathering with 5:1 RLM compression between waves.
+- **`/ralph`** — Recursive Audit-Learn-Plan-Harden loop. Convergence-based iterative improvement that audits, researches, implements, optimizes, tests, and learns from outcomes. Self-learning across sessions.
+- Custom workflows and integrations built on top of gstack's skill system.
 
 ## Quick start
 
@@ -46,89 +31,29 @@ Fork it. Improve it. Make it yours. And if you want to hate on free open source 
 
 Open Claude Code and paste this. Claude does the rest.
 
-> Install sage: run **`git clone https://github.com/garrytan/gstack.git ~/.claude/skills/sage && cd ~/.claude/skills/sage && ./setup`** then add a "sage" section to CLAUDE.md that says to use the /browse skill from sage for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /autoplan, /careful, /freeze, /guard, /unfreeze, /sage-upgrade. Then ask the user if they also want to add sage to the current project so teammates get it.
+> Install sage: run **`git clone https://github.com/hussainarslan/gstack.git ~/.claude/skills/sage && cd ~/.claude/skills/sage && ./setup`** then add a "sage" section to CLAUDE.md that says to use the /browse skill from sage for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, and lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /autoplan, /research, /ralph, /careful, /freeze, /guard, /unfreeze, /sage-upgrade. Then ask the user if they also want to add sage to the current project so teammates get it.
 
 ### Step 2: Add to your repo so teammates get it (optional)
 
-> Add sage to this project: run **`cp -Rf ~/.claude/skills/sage .claude/skills/sage && rm -rf .claude/skills/sage/.git && cd .claude/skills/sage && ./setup`** then add a "sage" section to this project's CLAUDE.md that says to use the /browse skill from sage for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /careful, /freeze, /guard, /unfreeze, /sage-upgrade, and tells Claude that if sage skills aren't working, run `cd .claude/skills/sage && ./setup` to build the binary and register skills.
-
-Real files get committed to your repo (not a submodule), so `git clone` just works. Everything lives inside `.claude/`. Nothing touches your PATH or runs in the background.
+> Add sage to this project: run **`cp -Rf ~/.claude/skills/sage .claude/skills/sage && rm -rf .claude/skills/sage/.git && cd .claude/skills/sage && ./setup`** then add a "sage" section to this project's CLAUDE.md that says to use the /browse skill from sage for all web browsing, never use mcp\_\_claude-in-chrome\_\_\* tools, lists the available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review, /design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse, /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro, /investigate, /document-release, /codex, /cso, /research, /ralph, /careful, /freeze, /guard, /unfreeze, /sage-upgrade, and tells Claude that if sage skills aren't working, run `cd .claude/skills/sage && ./setup` to build the binary and register skills.
 
 ### Codex, Gemini CLI, or Cursor
 
 sage works on any agent that supports the [SKILL.md standard](https://github.com/anthropics/claude-code). Skills live in `.agents/skills/` and are discovered automatically.
 
-Install to one repo:
-
 ```bash
-git clone https://github.com/garrytan/gstack.git .agents/skills/sage
+# Install to one repo
+git clone https://github.com/hussainarslan/gstack.git .agents/skills/sage
 cd .agents/skills/sage && ./setup --host codex
+
+# Install globally
+git clone https://github.com/hussainarslan/gstack.git ~/sage
+cd ~/sage && ./setup --host codex
+
+# Auto-detect which agents you have
+git clone https://github.com/hussainarslan/gstack.git ~/sage
+cd ~/sage && ./setup --host auto
 ```
-
-When setup runs from `.agents/skills/sage`, it installs the generated Codex skills next to it in the same repo and does not write to `~/.codex/skills`.
-
-Install once for your user account:
-
-```bash
-git clone https://github.com/garrytan/gstack.git ~/gstack
-cd ~/gstack && ./setup --host codex
-```
-
-`setup --host codex` creates the runtime root at `~/.codex/skills/sage` and
-links the generated Codex skills at the top level. This avoids duplicate skill
-discovery from the source repo checkout.
-
-Or let setup auto-detect which agents you have installed:
-
-```bash
-git clone https://github.com/garrytan/gstack.git ~/gstack
-cd ~/gstack && ./setup --host auto
-```
-
-For Codex-compatible hosts, setup now supports both repo-local installs from `.agents/skills/sage` and user-global installs from `~/.codex/skills/sage`. All 28 skills work across all supported agents. Hook-based safety skills (careful, freeze, guard) use inline safety advisory prose on non-Claude hosts.
-
-## See it work
-
-```
-You:    I want to build a daily briefing app for my calendar.
-You:    /office-hours
-Claude: [asks about the pain — specific examples, not hypotheticals]
-
-You:    Multiple Google calendars, events with stale info, wrong locations.
-        Prep takes forever and the results aren't good enough...
-
-Claude: I'm going to push back on the framing. You said "daily briefing
-        app." But what you actually described is a personal chief of
-        staff AI.
-        [extracts 5 capabilities you didn't realize you were describing]
-        [challenges 4 premises — you agree, disagree, or adjust]
-        [generates 3 implementation approaches with effort estimates]
-        RECOMMENDATION: Ship the narrowest wedge tomorrow, learn from
-        real usage. The full vision is a 3-month project — start with
-        the daily briefing that actually works.
-        [writes design doc → feeds into downstream skills automatically]
-
-You:    /plan-ceo-review
-        [reads the design doc, challenges scope, runs 10-section review]
-
-You:    /plan-eng-review
-        [ASCII diagrams for data flow, state machines, error paths]
-        [test matrix, failure modes, security concerns]
-
-You:    Approve plan. Exit plan mode.
-        [writes 2,400 lines across 11 files. ~8 minutes.]
-
-You:    /review
-        [AUTO-FIXED] 2 issues. [ASK] Race condition → you approve fix.
-
-You:    /qa https://staging.myapp.com
-        [opens real browser, clicks through flows, finds and fixes a bug]
-
-You:    /ship
-        Tests: 42 → 51 (+9 new). PR: github.com/you/app/pull/42
-```
-
-You said "daily briefing app." The agent said "you're building a chief of staff AI" — because it listened to your pain, not your feature request. Eight commands, end to end. That is not a copilot. That is a team.
 
 ## The sprint
 
@@ -140,34 +65,36 @@ Each skill feeds into the next. `/office-hours` writes a design doc that `/plan-
 
 | Skill | Your specialist | What they do |
 |-------|----------------|--------------|
-| `/office-hours` | **YC Office Hours** | Start here. Six forcing questions that reframe your product before you write code. Pushes back on your framing, challenges premises, generates implementation alternatives. Design doc feeds into every downstream skill. |
+| `/office-hours` | **YC Office Hours** | Start here. Six forcing questions that reframe your product before you write code. Pushes back on your framing, challenges premises, generates implementation alternatives. |
 | `/plan-ceo-review` | **CEO / Founder** | Rethink the problem. Find the 10-star product hiding inside the request. Four modes: Expansion, Selective Expansion, Hold Scope, Reduction. |
 | `/plan-eng-review` | **Eng Manager** | Lock in architecture, data flow, diagrams, edge cases, and tests. Forces hidden assumptions into the open. |
-| `/plan-design-review` | **Senior Designer** | Rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. AI Slop detection. Interactive — one AskUserQuestion per design choice. |
+| `/plan-design-review` | **Senior Designer** | Rates each design dimension 0-10, explains what a 10 looks like, then edits the plan to get there. AI Slop detection. |
 | `/design-consultation` | **Design Partner** | Build a complete design system from scratch. Researches the landscape, proposes creative risks, generates realistic product mockups. |
 | `/review` | **Staff Engineer** | Find the bugs that pass CI but blow up in production. Auto-fixes the obvious ones. Flags completeness gaps. |
-| `/investigate` | **Debugger** | Systematic root-cause debugging. Iron Law: no fixes without investigation. Traces data flow, tests hypotheses, stops after 3 failed fixes. |
+| `/investigate` | **Debugger** | Systematic root-cause debugging. Iron Law: no fixes without investigation. Traces data flow, tests hypotheses. |
 | `/design-review` | **Designer Who Codes** | Same audit as /plan-design-review, then fixes what it finds. Atomic commits, before/after screenshots. |
-| `/qa` | **QA Lead** | Test your app, find bugs, fix them with atomic commits, re-verify. Auto-generates regression tests for every fix. |
+| `/qa` | **QA Lead** | Test your app in a real browser, find bugs, fix them with atomic commits, re-verify. Auto-generates regression tests. |
 | `/qa-only` | **QA Reporter** | Same methodology as /qa but report only. Pure bug report without code changes. |
-| `/cso` | **Chief Security Officer** | OWASP Top 10 + STRIDE threat model. Zero-noise: 17 false positive exclusions, 8/10+ confidence gate, independent finding verification. Each finding includes a concrete exploit scenario. |
+| `/cso` | **Chief Security Officer** | OWASP Top 10 + STRIDE threat model. Zero-noise: independent finding verification. Each finding includes a concrete exploit scenario. |
+| `/research` | **Research Lead** | Deep research with parallel web crawling, persistent knowledge base, and cross-session learning. Agent swarm with 5:1 compression. |
+| `/ralph` | **Quality Engineer** | Recursive Audit-Learn-Plan-Harden loop. Iterative improvement until convergence. Self-learning across sessions. |
 | `/ship` | **Release Engineer** | Sync main, run tests, audit coverage, push, open PR. Bootstraps test frameworks if you don't have one. |
 | `/land-and-deploy` | **Release Engineer** | Merge the PR, wait for CI and deploy, verify production health. One command from "approved" to "verified in production." |
 | `/canary` | **SRE** | Post-deploy monitoring loop. Watches for console errors, performance regressions, and page failures. |
 | `/benchmark` | **Performance Engineer** | Baseline page load times, Core Web Vitals, and resource sizes. Compare before/after on every PR. |
 | `/document-release` | **Technical Writer** | Update all project docs to match what you just shipped. Catches stale READMEs automatically. |
-| `/retro` | **Eng Manager** | Team-aware weekly retro. Per-person breakdowns, shipping streaks, test health trends, growth opportunities. `/retro global` runs across all your projects and AI tools (Claude Code, Codex, Gemini). |
+| `/retro` | **Eng Manager** | Team-aware weekly retro. Per-person breakdowns, shipping streaks, test health trends. `/retro global` runs across all your projects and AI tools. |
+| `/autoplan` | **Review Pipeline** | One command, fully reviewed plan. Runs CEO → design → eng review automatically. Surfaces only taste decisions for your approval. |
 | `/browse` | **QA Engineer** | Real Chromium browser, real clicks, real screenshots. ~100ms per command. |
 | `/setup-browser-cookies` | **Session Manager** | Import cookies from your real browser (Chrome, Arc, Brave, Edge) into the headless session. Test authenticated pages. |
-| `/autoplan` | **Review Pipeline** | One command, fully reviewed plan. Runs CEO → design → eng review automatically with encoded decision principles. Surfaces only taste decisions for your approval. |
 
 ### Power tools
 
 | Skill | What it does |
 |-------|-------------|
-| `/codex` | **Second Opinion** — independent code review from OpenAI Codex CLI. Three modes: review (pass/fail gate), adversarial challenge, and open consultation. Cross-model analysis when both `/review` and `/codex` have run. |
-| `/careful` | **Safety Guardrails** — warns before destructive commands (rm -rf, DROP TABLE, force-push). Say "be careful" to activate. Override any warning. |
-| `/freeze` | **Edit Lock** — restrict file edits to one directory. Prevents accidental changes outside scope while debugging. |
+| `/codex` | **Second Opinion** — independent code review from OpenAI Codex CLI. Three modes: review (pass/fail gate), adversarial challenge, and open consultation. |
+| `/careful` | **Safety Guardrails** — warns before destructive commands (rm -rf, DROP TABLE, force-push). Override any warning. |
+| `/freeze` | **Edit Lock** — restrict file edits to one directory. Prevents accidental changes outside scope. |
 | `/guard` | **Full Safety** — `/careful` + `/freeze` in one command. Maximum safety for prod work. |
 | `/unfreeze` | **Unlock** — remove the `/freeze` boundary. |
 | `/setup-deploy` | **Deploy Configurator** — one-time setup for `/land-and-deploy`. Detects your platform, production URL, and deploy commands. |
@@ -179,23 +106,25 @@ Each skill feeds into the next. `/office-hours` writes a design doc that `/plan-
 
 sage works well with one sprint. It gets interesting with ten running at once.
 
-[Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session on `/office-hours`, another on `/review`, a third implementing a feature, a fourth running `/qa`. All at the same time. The sprint structure is what makes parallelism work — without a process, ten agents is ten sources of chaos. With a process, each agent knows exactly what to do and when to stop.
+[Conductor](https://conductor.build) runs multiple Claude Code sessions in parallel — each in its own isolated workspace. One session on `/office-hours`, another on `/review`, a third implementing a feature, a fourth running `/qa`. All at the same time. The sprint structure is what makes parallelism work — without a process, ten agents is ten sources of chaos.
+
+## Credits
+
+sage is built on top of [gstack](https://github.com/garrytan/gstack) by [Garry Tan](https://x.com/garrytan), President & CEO of [Y Combinator](https://www.ycombinator.com/). gstack is the original open-source software factory — twenty specialists and eight power tools that turn Claude Code into a virtual engineering team.
+
+The core architecture, skill system, headless browser, template engine, and sprint workflow are all gstack. sage extends it with deep research capabilities, iterative improvement loops, and custom workflows.
+
+Thank you to Garry and the gstack community for building this in the open. MIT license, free forever.
 
 ---
 
-Free, MIT licensed, open source. No premium tier, no waitlist.
-
-I open sourced how I build software. You can fork it and make it your own.
-
-> **We're hiring.** Want to ship 10K+ LOC/day and help harden sage?
-> Come work at YC — [ycombinator.com/software](https://ycombinator.com/software)
-> Extremely competitive salary and equity. San Francisco, Dogpatch District.
+Free, MIT licensed, open source. Fork it. Improve it. Make it yours.
 
 ## Docs
 
 | Doc | What it covers |
 |-----|---------------|
-| [Skill Deep Dives](docs/skills.md) | Philosophy, examples, and workflow for every skill (includes Greptile integration) |
+| [Skill Deep Dives](docs/skills.md) | Philosophy, examples, and workflow for every skill |
 | [Builder Ethos](ETHOS.md) | Builder philosophy: Boil the Lake, Search Before Building, three layers of knowledge |
 | [Architecture](ARCHITECTURE.md) | Design decisions and system internals |
 | [Browser Reference](BROWSER.md) | Full command reference for `/browse` |
@@ -212,10 +141,6 @@ sage includes **opt-in** usage telemetry to help improve the project. Here's exa
 - **What's never sent:** code, file paths, repo names, branch names, prompts, or any user-generated content.
 - **Change anytime:** `sage-config set telemetry off` disables everything instantly.
 
-Data is stored in [Supabase](https://supabase.com) (open source Firebase alternative). The schema is in [`supabase/migrations/001_telemetry.sql`](supabase/migrations/001_telemetry.sql) — you can verify exactly what's collected. The Supabase publishable key in the repo is a public key (like a Firebase API key) — row-level security policies restrict it to insert-only access.
-
-**Local analytics are always available.** Run `sage-analytics` to see your personal usage dashboard from the local JSONL file — no remote data needed.
-
 ## Troubleshooting
 
 **Skill not showing up?** `cd ~/.claude/skills/sage && ./setup`
@@ -224,9 +149,7 @@ Data is stored in [Supabase](https://supabase.com) (open source Firebase alterna
 
 **Stale install?** Run `/sage-upgrade` — or set `auto_upgrade: true` in `~/.sage/config.yaml`
 
-**Codex says "Skipped loading skill(s) due to invalid SKILL.md"?** Your Codex skill descriptions are stale. Fix: `cd ~/.codex/skills/sage && git pull && ./setup --host codex` — or for repo-local installs: `cd "$(readlink -f .agents/skills/sage)" && git pull && ./setup --host codex`
-
-**Windows users:** sage works on Windows 11 via Git Bash or WSL. Node.js is required in addition to Bun — Bun has a known bug with Playwright's pipe transport on Windows ([bun#4253](https://github.com/oven-sh/bun/issues/4253)). The browse server automatically falls back to Node.js. Make sure both `bun` and `node` are on your PATH.
+**Windows users:** sage works on Windows 11 via Git Bash or WSL. Node.js is required in addition to Bun — Bun has a known bug with Playwright's pipe transport on Windows ([bun#4253](https://github.com/oven-sh/bun/issues/4253)). The browse server automatically falls back to Node.js.
 
 **Claude says it can't see the skills?** Make sure your project's `CLAUDE.md` has a sage section. Add this:
 
@@ -236,10 +159,10 @@ Use /browse from sage for all web browsing. Never use mcp__claude-in-chrome__* t
 Available skills: /office-hours, /plan-ceo-review, /plan-eng-review, /plan-design-review,
 /design-consultation, /review, /ship, /land-and-deploy, /canary, /benchmark, /browse,
 /qa, /qa-only, /design-review, /setup-browser-cookies, /setup-deploy, /retro,
-/investigate, /document-release, /codex, /cso, /autoplan, /careful, /freeze, /guard,
-/unfreeze, /sage-upgrade.
+/investigate, /document-release, /codex, /cso, /autoplan, /research, /ralph,
+/careful, /freeze, /guard, /unfreeze, /sage-upgrade.
 ```
 
 ## License
 
-MIT. Free forever. Go build something.
+MIT. Free forever. Built on [gstack](https://github.com/garrytan/gstack). Go build something.

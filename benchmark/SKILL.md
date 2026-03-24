@@ -334,9 +334,9 @@ When the user types `/benchmark`, run this skill.
 ### Phase 1: Setup
 
 ```bash
-eval "$(~/.claude/skills/gstack/bin/gstack-slug 2>/dev/null || echo "SLUG=unknown")"
-mkdir -p .gstack/benchmark-reports
-mkdir -p .gstack/benchmark-reports/baselines
+eval "$(~/.claude/skills/sage/bin/sage-slug 2>/dev/null || echo "SLUG=unknown")"
+mkdir -p .sage/benchmark-reports
+mkdir -p .sage/benchmark-reports/baselines
 ```
 
 ### Phase 2: Page Discovery
@@ -417,7 +417,7 @@ Save metrics to baseline file:
 }
 ```
 
-Write to `.gstack/benchmark-reports/baselines/baseline.json`.
+Write to `.sage/benchmark-reports/baselines/baseline.json`.
 
 ### Phase 5: Comparison
 
@@ -514,7 +514,7 @@ TREND: Performance degrading. LCP doubled in 8 days.
 
 ### Phase 9: Save Report
 
-Write to `.gstack/benchmark-reports/{date}-benchmark.md` and `.gstack/benchmark-reports/{date}-benchmark.json`.
+Write to `.sage/benchmark-reports/{date}-benchmark.md` and `.sage/benchmark-reports/{date}-benchmark.json`.
 
 ## Important Rules
 
